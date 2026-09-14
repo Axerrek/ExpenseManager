@@ -38,7 +38,19 @@ namespace ExpenseManager.Controllers
             }
             return View(expense);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var expense = await _context.Expenses.FindAsync(id);
+            if (expense != null)
+            {
+                _context.Expenses.Remove(expense);
+                await _context.SaveChangesAsync();
+            }
 
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
