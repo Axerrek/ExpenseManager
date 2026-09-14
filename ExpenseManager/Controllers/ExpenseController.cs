@@ -1,4 +1,5 @@
 ﻿using ExpenseManager.Data;
+using ExpenseManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,6 @@ namespace ExpenseManager.Controllers
             _context = context;
         }
 
-        // GET: /Expenses
         public async Task<IActionResult> Index()
         {
             var expenses = await _context.Expenses
@@ -22,5 +22,23 @@ namespace ExpenseManager.Controllers
 
             return View(expenses);
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Expense expense)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(expense);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(expense);
+        }
+
+
     }
 }
