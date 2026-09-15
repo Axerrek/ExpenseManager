@@ -1,0 +1,56 @@
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Zaloguj siê";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <section class="card shadow-sm p-4">
+            <form id="account" method="post">
+                <h2 class="text-center mb-3">@ViewData["Title"]</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                <!-- Adres E-mail -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.UserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" placeholder="Login lub email" />
+                    <label asp-for="Input.UserNameOrEmail" class="form-label">Nazwa u¿ytkownika lub E-mail</label>
+                    <span asp-validation-for="Input.UserNameOrEmail" class="text-danger"></span>
+                </div>
+
+                <!-- Has³o -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" type="password" placeholder="has³o" />
+                    <label asp-for="Input.Password">Has³o</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <!-- Zapamiêtaj mnie -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    <label class="form-check-label" asp-for="Input.RememberMe">
+                        Zapamiêtaj mnie
+                    </label>
+                </div>
+
+                <!-- Przycisk Logowania -->
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mb-3">Zaloguj siê</button>
+                </div>
+
+                <!-- Link do Rejestracji -->
+                <div class="text-center">
+                    <p class="mb-0">
+                        Nie masz jeszcze konta? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Zarejestruj siê</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

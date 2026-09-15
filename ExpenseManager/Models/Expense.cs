@@ -40,5 +40,7 @@ namespace ExpenseManager.Models
         [Display(Name = "Data")]
         public DateTime Date { get; set; } = DateTime.Now;
 
+        public string? UserId { get; set; }
+
     }
 }

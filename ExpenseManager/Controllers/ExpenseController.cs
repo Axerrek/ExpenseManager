@@ -3,8 +3,12 @@ using ExpenseManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace ExpenseManager.Controllers
 {
+    [Authorize]
     public class ExpensesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,7 +21,10 @@ namespace ExpenseManager.Controllers
 
         public async Task<IActionResult> Index(string searchString, ExpenseCategory? category)
         {
-            var query = _context.Expenses.AsQueryable();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var query = _context.Expenses.Where(e => e.UserId == userId);
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -29,16 +36,15 @@ namespace ExpenseManager.Controllers
                 query = query.Where(e => e.Category == category.Value);
             }
 
-            ViewData["TotalSum"] = await query.SumAsync(e => (decimal?)e.Price) ?? 0m;
-
             var expenses = await query
                 .OrderByDescending(e => e.Date)
                 .ToListAsync();
+
             ViewData["TotalSum"] = expenses.Sum(e => e.Price);
 
             return View(expenses);
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -47,19 +53,40 @@ namespace ExpenseManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Expense expense)
         {
+            expense.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ModelState.IsValid)
             {
                 _context.Add(expense);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(expense);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var expense = await _context.Expenses.FindAsync(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var expense = await _context.Expenses
+                .FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId);
+
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            return View(expense);
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var expense = await _context.Expenses
+                .FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId);
+
             if (expense != null)
             {
                 _context.Expenses.Remove(expense);
@@ -71,7 +98,11 @@ namespace ExpenseManager.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var expense = await _context.Expenses.FindAsync(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var expense = await _context.Expenses
+                .FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId);
+
             if (expense == null)
             {
                 return NotFound();
@@ -84,6 +115,10 @@ namespace ExpenseManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Expense expense)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            expense.UserId = userId;
+
             if (ModelState.IsValid)
             {
                 _context.Update(expense);
