@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenseManager.Models
 {
@@ -21,6 +22,7 @@ namespace ExpenseManager.Models
 
         [Required(ErrorMessage = "Kwota jest wymagana.")]
         [Range(0.01, 1000000.00, ErrorMessage = "Kwota musi być większa od 0.")]
+        [Column(TypeName = "decimal(18,2)")]
         [DataType(DataType.Currency)]
         [Display(Name = "Kwota")]
         public decimal? Price

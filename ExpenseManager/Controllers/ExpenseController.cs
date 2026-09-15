@@ -34,6 +34,7 @@ namespace ExpenseManager.Controllers
             var expenses = await query
                 .OrderByDescending(e => e.Date)
                 .ToListAsync();
+            ViewData["TotalSum"] = expenses.Sum(e => e.Price);
 
             return View(expenses);
         }
