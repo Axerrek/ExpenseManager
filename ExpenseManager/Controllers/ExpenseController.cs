@@ -14,14 +14,30 @@ namespace ExpenseManager.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(string searchString, ExpenseCategory? category)
         {
-            var expenses = await _context.Expenses
+            var query = _context.Expenses.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(e => e.Description.ToLower().Contains(searchString.ToLower()));
+            }
+
+            if (category.HasValue)
+            {
+                query = query.Where(e => e.Category == category.Value);
+            }
+
+            ViewData["TotalSum"] = await query.SumAsync(e => (decimal?)e.Price) ?? 0m;
+
+            var expenses = await query
                 .OrderByDescending(e => e.Date)
                 .ToListAsync();
 
             return View(expenses);
         }
+
         public IActionResult Create()
         {
             return View();

@@ -4,40 +4,67 @@
     ViewData["Title"] = "Moje wydatki";
 }
 
-<h2>Lista Wydatków</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Lista Wydatków</h2>
+    <a asp-action="Create" class="btn btn-primary">Dodaj wydatek</a>
+</div>
 
-<p>
-    <a asp-action="Create">+ Dodaj nowy wydatek</a>
-</p>
+<div class="card mb-4 shadow-sm border-0">
+    <div class="card-body bg-white rounded">
+        <form asp-action="Index" method="get" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label small text-muted">Szukaj w opisie</label>
+                <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="form-control" placeholder="np. Zakupy..." />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small text-muted">Kategoria</label>
+                <select name="category" asp-items="Html.GetEnumSelectList<ExpenseCategory>()" class="form-select">
+                    <option value="">-- Wszystkie --</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-secondary w-100">Filtruj</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Data</th>
-            <th>Opis</th>
-            <th>Kategoria</th>
-            <th>Kwota</th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                <td>@item.Description</td>
-                <td>@item.Category</td>
-                <td>@item.Price.ToString("C2")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
-                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
-                        <button type="submit" onclick="return confirm('Na pewno usunąć?');">Usuń</button>
-                    </form>
-                </td>
-
-                
-
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Data</th>
+                    <th>Opis</th>
+                    <th>Kategoria</th>
+                    <th class="text-end">Kwota</th>
+                    <th class="text-center">Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">Brak wydatków do wyświetlenia.</td>
+                    </tr>
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                        <td class="fw-bold">@item.Description</td>
+                        <td><span class="badge bg-secondary">@item.Category</span></td>
+                        <td class="text-end fw-bold text-danger">@item.Price.ToString("C2")</td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">Edytuj</a>
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Na pewno usunąć?');">Usuń</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
