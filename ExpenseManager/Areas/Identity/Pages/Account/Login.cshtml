@@ -13,7 +13,7 @@
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
-                <!-- Adres E-mail -->
+                <!-- Login -->
                 <div class="form-floating mb-3">
                     <input asp-for="Input.UserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" placeholder="Login lub email" />
                     <label asp-for="Input.UserNameOrEmail" class="form-label">Nazwa u¿ytkownika lub E-mail</label>
@@ -27,7 +27,6 @@
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
 
-                <!-- Zapamiêtaj mnie -->
                 <div class="form-check mb-3">
                     <input class="form-check-input" asp-for="Input.RememberMe" />
                     <label class="form-check-label" asp-for="Input.RememberMe">
@@ -35,12 +34,11 @@
                     </label>
                 </div>
 
-                <!-- Przycisk Logowania -->
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mb-3">Zaloguj siê</button>
                 </div>
 
-                <!-- Link do Rejestracji -->
+
                 <div class="text-center">
                     <p class="mb-0">
                         Nie masz jeszcze konta? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Zarejestruj siê</a>
