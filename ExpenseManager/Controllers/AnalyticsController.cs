@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ExpenseManager.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ExpenseManager.Data;
+using System.Security.Claims;
 
 namespace ExpenseManager.Controllers
 {
@@ -16,8 +17,11 @@ namespace ExpenseManager.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             // Wykres kołowy - podział na kategorie
             var categoryData = await _context.Expenses
+                .Where(e => e.UserId == userId)
                 .GroupBy(e => e.Category)
                 .Select(g => new
                 {
@@ -32,6 +36,7 @@ namespace ExpenseManager.Controllers
 
             // wykres słupkowy - wydatki z poszczególnych miesięcy
             var monthlyData = await _context.Expenses
+                .Where(e => e.UserId == userId)
                 .GroupBy(e => new { e.Date.Year, e.Date.Month })
                 .Select(g => new
                 {

@@ -14,12 +14,18 @@
         <form asp-action="Index" method="get" class="row g-2 align-items-end">
             <div class="col-md-5">
                 <label class="form-label small text-muted">Szukaj w opisie</label>
-                <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="form-control" placeholder="np. Zakupy..." />
+                <input type="text" 
+                    name="searchString"
+                       value="@ViewData["CurrentSearch"]"
+                    class="form-control" 
+                    placeholder="np. Zakupy..." />
             </div>
             <div class="col-md-4">
                 <label class="form-label small text-muted">Kategoria</label>
-                <select name="category" asp-items="Html.GetEnumSelectList<ExpenseCategory>()" class="form-select">
-                    <option value="">-- Wszystkie --</option>
+                <select name="category"
+                        asp-items="ViewBag.CategoryList"
+                        class="form-select">
+                    <option value="">-- Wszystkie kategorie --</option>
                 </select>
             </div>
             <div class="col-md-3 d-flex gap-2">

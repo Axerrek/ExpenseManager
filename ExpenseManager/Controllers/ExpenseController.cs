@@ -1,9 +1,9 @@
 ﻿using ExpenseManager.Data;
 using ExpenseManager.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace ExpenseManager.Controllers
@@ -41,6 +41,18 @@ namespace ExpenseManager.Controllers
                 .ToListAsync();
 
             ViewData["TotalSum"] = expenses.Sum(e => e.Price);
+
+            ViewData["CurrentSearch"] = searchString;
+            ViewData["CurrentCategory"] = category;
+
+            ViewBag.CategoryList = new SelectList(
+                Enum.GetValues(typeof(ExpenseCategory))
+                    .Cast<ExpenseCategory>()
+                    .Select(e => new { Id = e, Name = e.ToString() }),
+                "Id",
+                "Name",
+                category 
+                );
 
             return View(expenses);
         }
