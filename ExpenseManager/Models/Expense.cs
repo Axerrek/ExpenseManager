@@ -5,13 +5,33 @@ namespace ExpenseManager.Models
 {
 
     public enum ExpenseCategory
-{
+    {
         Jedzenie,
         Dom,
         Rozrywka,
-}
+        Transport,
+        Zdrowie,
+        Edukacja,
+        Abonamenty,
+        Odzież,
+        Inne,
+    }
+    public enum Currency
+    {
+        PLN,
+        EUR,
+        USD,
+        GBP,
+        CHF
+    }
     public class Expense
     {
+        public decimal OriginalPrice { get; set; }
+
+        public Currency Currency { get; set; } = Currency.PLN;
+
+        public decimal ExchangeRate { get; set; } = 1.0m;
+
         public int Id { get; set; }
         [Required(ErrorMessage = "Opis jest wymagany.")]
         [StringLength(100, ErrorMessage = "Opis nie może przekraczać 100 znaków.")]

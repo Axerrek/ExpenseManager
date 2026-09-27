@@ -8,24 +8,31 @@
                 <h3 class="card-title mb-4">Dodaj nowy wydatek</h3>
 
                 <form asp-action="Create" method="post">
+                    <!-- OPIS -->
                     <div class="mb-3">
                         <label class="form-label">Opis</label>
                         <input asp-for="Description" class="form-control" placeholder="np. Obiady w pracy" />
                         <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Kwota (zł)</label>
-                        <input asp-for="Price" type="number" step="0.01" class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger small"></span>
+                    <!-- KWOTA -->
+                    <div class="form-group mb-3">
+                        <label asp-for="OriginalPrice" class="control-label">Kwota</label>
+                        <input asp-for="OriginalPrice" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="OriginalPrice" class="text-danger"></span>
                     </div>
-
+                    <!-- WALUTA -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Currency" class="control-label">Waluta</label>
+                        <select asp-for="Currency" asp-items="Html.GetEnumSelectList<ExpenseManager.Models.Currency>()" class="form-control"></select>
+                        <span asp-validation-for="Currency" class="text-danger"></span>
+                    </div>
+                    <!-- KATEGORIA WYDATKU -->
                     <div class="mb-3">
                         <label class="form-label">Kategoria</label>
                         <select asp-for="Category" asp-items="Html.GetEnumSelectList<ExpenseCategory>()" class="form-select"></select>
                         <span asp-validation-for="Category" class="text-danger small"></span>
                     </div>
-
+                    <!-- DATA -->
                     <div class="mb-3">
                         <label class="form-label">Data</label>
                         <input asp-for="Date" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />

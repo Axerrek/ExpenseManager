@@ -1,10 +1,12 @@
 ﻿using ExpenseManager.Data;
 using ExpenseManager.Models;
+using ExpenseManager.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+
 
 namespace ExpenseManager.Controllers
 {
@@ -12,12 +14,17 @@ namespace ExpenseManager.Controllers
     public class ExpensesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly NbpApiService _nbpApiService;
 
-        public ExpensesController(ApplicationDbContext context)
+        public interface INbpApiService
+        {
+            Task<decimal?> GetExchangeRateAsync(Currency currency, DateTime? date = null);
+        }
+        public ExpensesController(ApplicationDbContext context, NbpApiService nbpApiService)
         {
             _context = context;
+            _nbpApiService = nbpApiService;
         }
-
 
         public async Task<IActionResult> Index(string searchString, ExpenseCategory? category)
         {
@@ -66,8 +73,18 @@ namespace ExpenseManager.Controllers
         public async Task<IActionResult> Create(Expense expense)
         {
             expense.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            ModelState.Remove(nameof(expense.UserId));
+            ModelState.Remove(nameof(expense.Price));
+            ModelState.Remove(nameof(expense.ExchangeRate));
+
             if (ModelState.IsValid)
             {
+                // Pobranie kursu z NBPAPI i wyliczenie
+                var rate = await _nbpApiService.GetExchangeRateAsync(expense.Currency);
+                expense.ExchangeRate = rate ?? 1.0m;
+                expense.Price = Math.Round(expense.OriginalPrice * expense.ExchangeRate, 2);
+
                 _context.Add(expense);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -75,7 +92,7 @@ namespace ExpenseManager.Controllers
 
             return View(expense);
         }
-        [HttpPost]
+        [HttpGet]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {

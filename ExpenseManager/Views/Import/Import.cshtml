@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Import Wydatków z CSV";
+}
+
+<div class="container mt-4" style="max-width: 650px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="card-title mb-0"><i class="bi bi-file-earmark-arrow-up me-2"></i>Import Transakcji z Banku</h4>
+        </div>
+        <div class="card-body p-4">
+            <p class="text-muted">
+                Prześlij wyciąg w formacie <strong>CSV</strong> wygenerowany z banku. System automatycznie przeliczy transakcje walutowe według kursu NBP z dnia operacji.
+            </p>
+
+            <form asp-action="Import" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="alert alert-danger d-none" id="valSummary"></div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <div asp-validation-summary="All" class="mb-0"></div>
+                    </div>
+                }
+
+                <div class="mb-4">
+                    <label for="csvFile" class="form-label fw-bold">Wybierz plik CSV</label>
+                    <input type="file" name="csvFile" id="csvFile" class="form-control form-control-lg" accept=".csv" required />
+                    <div class="form-text">Maksymalny rozmiar pliku: 10 MB.</div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-upload me-1"></i> Rozpocznij Import
+                    </button>
+                    <a asp-controller="Expenses" asp-action="Index" class="btn btn-outline-secondary">Anuluj</a>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer bg-light text-muted p-3">
+            <small class="d-block fw-bold mb-1">Obsługiwane formaty:</small>
+            <ul class="mb-0 ps-3">
+                <li><strong>mBank</strong> (separator: średnik <code>;</code>)</li>
+                <li><strong>Revolut</strong> (separator: przecinek <code>,</code>)</li>
+            </ul>
+        </div>
+    </div>
+</div>

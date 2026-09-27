@@ -1,0 +1,79 @@
+﻿@model List<ExpenseManager.Models.ViewModels.ImportExpenseItemViewModel>
+
+@{
+    ViewData["Title"] = "Podgląd i kategoryzacja importu";
+}
+
+<div class="container mt-4">
+    <h2>Podgląd zaimportowanych wydatków</h2>
+    <p class="text-muted">Przejrzyj dane, przypisz odpowiednie kategorie i odznacz wiersze, których nie chcesz zapisywać.</p>
+
+    <form asp-action="SaveImported" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="table-responsive mt-3">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="text-center" style="width: 50px;">
+                            <input type="checkbox" id="selectAll" class="form-check-input" checked />
+                        </th>
+                        <th>Data</th>
+                        <th>Opis</th>
+                        <th>Kwota pierwotna</th>
+                        <th>Waluta</th>
+                        <th>Kurs</th>
+                        <th>Kwota (PLN)</th>
+                        <th style="min-width: 180px;">Kategoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" asp-for="@Model[i].Selected" class="form-check-input item-checkbox" />
+                            </td>
+                            <td>
+                                <input type="date" asp-for="@Model[i].Date" class="form-control form-control-sm" />
+                            </td>
+                            <td>
+                                <input type="text" asp-for="@Model[i].Description" class="form-control form-control-sm" />
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" asp-for="@Model[i].OriginalPrice" class="form-control form-control-sm" />
+                            </td>
+                            <td>
+                                <select asp-for="@Model[i].Currency" asp-items="Html.GetEnumSelectList<ExpenseManager.Models.Currency>()" class="form-select form-select-sm"></select>
+                            </td>
+                            <td>
+                                <input type="number" step="0.0001" asp-for="@Model[i].ExchangeRate" class="form-control form-control-sm" />
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" asp-for="@Model[i].Price" class="form-control form-control-sm" />
+                            </td>
+                            <td>
+                                <select asp-for="@Model[i].Category" asp-items="Html.GetEnumSelectList<ExpenseManager.Models.ExpenseCategory>()" class="form-select form-select-sm"></select>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3 mb-5">
+            <a asp-action="Import" class="btn btn-secondary">Anuluj</a>
+            <button type="submit" class="btn btn-success">Zapisz zaznaczone wydatki</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // Skrypt do zaznaczania/odznaczania wszystkich wierszy jednym kliknięciem
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+    </script>
+}
