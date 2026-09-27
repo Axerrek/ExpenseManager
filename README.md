@@ -2,16 +2,22 @@ Aplikacja internetowa typu **Expense Tracker** stworzona w technologii **ASP.NET
 
 ---
 
+
+
+
 # 🚀 Główne Funkcjonalności
 
 ## 1. 🔐 Autoryzacja i Rejestracja (ASP.NET Core Identity)
 * **Hybrydowe logowanie:** Możliwość zalogowania się za pomocą **Nazwy użytkownika** lub **Adresu E-mail**.
 * **Rejestracja:** Zakładanie kont z podaniem nazwy użytkownika oraz e-maila.
 * **Bezpieczeństwo:** Dostęp do prywatnych funkcji (wydatki, analityka) jest chroniony przez atrybuty `[Authorize]`.
+* **Wygoda:** Możliwość szybkiego utworzenia konta i logowania się za pomocą autoryzacji konta Google.
 
 <details>
   <summary>🔍 Kliknij, aby zobaczyć zrzuty ekranu</summary>
-  <img src="https://github.com/user-attachments/assets/2bd15b17-d52c-48a6-ba3e-6bdb38959795" alt="Logowanie" style="max-width: 100%; height: auto;" />
+  <img src="https://github.com/user-attachments/assets/406f4430-ab99-47f0-8f1b-4d3c8c73c19e" alt="Rejestracja" style="max-width: 100%; height: auto;" />
+  <img src="https://github.com/user-attachments/assets/cc56c362-5260-4db4-bc54-b4c053e2afcb" alt="Logowanie" style="max-width: 100%; height: auto;" />
+  
 </details>
 
 ---
@@ -20,6 +26,7 @@ Aplikacja internetowa typu **Expense Tracker** stworzona w technologii **ASP.NET
 * **Operacje CRUD:** Pełne tworzenie (Create), odczytywanie (Read), edycja (Update) oraz usuwanie (Delete) wpisów wydatków.
 * **Wydajna filtracja i sortowanie (LINQ):** Przetwarzanie i wyszukiwanie danych po stronie serwera przy użyciu zapytań **LINQ**.
 * **Zakresy dat i kategorie:** Kategoryzowanie wydatków oraz łatwy podgląd historii transakcji.
+* **Dodawanie wielu wydatków na raz:** Możemy dodać plik CSV, który po poprawkach i zaakceptowaniu wydatków można w szybki sposób dodać do aplikacji.
 
 <details>
   <summary>🔍 Kliknij, aby zobaczyć zrzuty ekranu</summary>
@@ -28,6 +35,11 @@ Aplikacja internetowa typu **Expense Tracker** stworzona w technologii **ASP.NET
   
   Dodawanie wydatku - formularz
   <img src="https://github.com/user-attachments/assets/6bc1a7c9-a09f-4697-b6e6-6a0d953160f1" alt="Dodanie wydatku" style="max-width: 100%; height: auto;"/>
+
+  Krótki formularz dodawania poprzez plik CSV
+  <img src="https://github.com/user-attachments/assets/407820bc-4a59-45f1-985a-c1acb9659d8c" alt="Formularz CSV" style="max-width: 100%; height: auto;"/>
+  Podgląd wydatków z możliwością edycji, np. poprawy kategorii
+  <img src="https://github.com/user-attachments/assets/69f0a496-0bf1-4d2d-8ead-565e00563b64" alt="Podgląd wydatków" style="max-width: 100%; height: auto;"/>
   
   Funkcjonalność filtrów kategorii
   <img src="https://github.com/user-attachments/assets/0e242e53-b769-4108-8199-4d8e2b28bdc4" alt="filtr kategorii" style="max-width: 100%; height: auto;"/>
@@ -49,7 +61,7 @@ Aplikacja internetowa typu **Expense Tracker** stworzona w technologii **ASP.NET
 
 <details>
   <summary>🔍 Kliknij, aby zobaczyć zrzuty ekranu</summary>
-  <img src="https://github.com/user-attachments/assets/c770e1af-ef61-43b7-a4ea-7e2dcec9c2e4" alt="Wykresy" style="max-width: 100%; height: auto"/>
+  <img src="https://github.com/user-attachments/assets/5ea140cc-c5ba-4d32-b819-ba872c1b5630" alt="Wykresy" style="max-width: 100%; height: auto"/>
 
 </details>
 
