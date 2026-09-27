@@ -39,7 +39,7 @@ Aplikacja internetowa typu **Expense Tracker** stworzona w technologii **ASP.NET
   Krótki formularz dodawania poprzez plik CSV
   <img src="https://github.com/user-attachments/assets/407820bc-4a59-45f1-985a-c1acb9659d8c" alt="Formularz CSV" style="max-width: 100%; height: auto;"/>
   Podgląd wydatków z możliwością edycji, np. poprawy kategorii
-  <img src="https://github.com/user-attachments/assets/69f0a496-0bf1-4d2d-8ead-565e00563b64" alt="Podgląd wydatków" style="max-width: 100%; height: auto;"/>
+  <img src="https://github.com/user-attachments/assets/4aea024c-2651-4c34-8e58-451d2bdbfe31" alt="Podgląd wydatków" style="max-width: 100%; height: auto;"/>
   
   Funkcjonalność filtrów kategorii
   <img src="https://github.com/user-attachments/assets/0e242e53-b769-4108-8199-4d8e2b28bdc4" alt="filtr kategorii" style="max-width: 100%; height: auto;"/>
